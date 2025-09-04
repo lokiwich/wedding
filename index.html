@@ -141,15 +141,9 @@
         /* --- استایل‌های اصلاح شده مخصوص موبایل --- */
         @media (max-width: 640px) {
             .booklet-wrapper {
-                /* * تغییر اصلی اینجاست: 
-                 * کارت به جای پایین، به سمت بالا حرکت می‌کند تا روی دکمه‌ها را نپوشاند.
-                */
                 transform: translateY(-40px) scale(0.9) !important;  
             }
             .booklet-wrapper.open {
-                /* * تغییر اصلی اینجاست: 
-                 * کارت به جای پایین، به سمت بالا حرکت می‌کند تا روی دکمه‌ها را نپوشاند.
-                */
                 transform: translateY(-60px) scale(0.9) !important; 
             }
             .cover {
@@ -160,7 +154,7 @@
             }
         }
 
-        /* -- استایل‌های مودال و دکمه نشان -- */
+        /* -- استایل‌های مودال و دکمه‌ها -- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -213,7 +207,6 @@
         }
 
         #neshan-button {
-            display: none; /* Initially hidden */
             background-color: #26a69a; /* Neshan-like color */
             color: white;
             padding: 0.75rem 1.5rem;
@@ -229,13 +222,35 @@
             background-color: #2bbbad;
             transform: translateY(-2px);
         }
+        
+        /* استایل دکمه کنترل صدا */
+        #audio-control-button {
+            background-color: #26a69a; /* A nice purple color */
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+        #audio-control-button:hover {
+            background-color: #9d80f5;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
 
+    <audio id="wedding-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="booklet-wrapper" id="booklet-wrapper">
         <div class="invitation-card">
-            <!-- برای راحتی در انتخاب، یک آیدی به تصویر اضافه شد -->
             <img src="/cart.jpg" class="page" id="invitation-image" alt="کارت دعوت">
         </div>
         <div class="cover" id="cover">
@@ -250,24 +265,41 @@
         </div>
     </div>
 
-    <!-- این کانتینر برای دکمه و راهنماست -->
-    <div class="fixed bottom-10 w-full flex flex-col items-center justify-center z-50 text-center px-4">
-        <!-- راهنمای اولیه برای کلیک -->
+    <div class="fixed bottom-10 w-full flex flex-col items-center justify-center z-50 text-center px-4 space-y-4">
         <div id="click-instruction" class="text-gray-500 transition-opacity duration-500 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full">
             <p>برای باز کردن روی کارت کلیک کنید</p>
         </div>
     
-        <!-- دکمه نشان (در ابتدا مخفی است) -->
-        <!-- لطفا lat و lng و title را با مشخصات مکان مورد نظر خود جایگزین کنید -->
-        <a href="https://nshn.ir/sb_bhbxBNFoIY9" id="neshan-button">
-            📍 باز کردن در نشان
-        </a>
+        <div id="action-buttons" class="flex items-center gap-4" style="display: none;">
+            <a href="https://nshn.ir/sb_bhbxBNFoIY9" id="neshan-button">
+                <div class="flex gap-4 items-center">
+                    <svg class="w-12 h-12" viewBox="0 0 37 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M34.8713 25.28C35.7366 22.9783 36.1295 20.5258 36.0264 18.0689C35.9233 15.6121 35.3264 13.2012 34.2713 10.98L29.0613 0L16.9113 1C14.4651 1.19329 12.0826 1.8752 9.90465 3.00541C7.72669 4.13561 5.79752 5.69115 4.23127 7.58L1.43127 7.71C1.0351 7.72817 0.662252 7.90249 0.394271 8.19484C0.12629 8.48718 -0.0150142 8.87375 0.00126569 9.27C0.0129434 9.48327 0.0709541 9.69143 0.171264 9.88L1.44127 12.32C0.47182 14.7205 0.0256594 17.3002 0.132575 19.8869C0.239491 22.4736 0.897018 25.0077 2.06126 27.32L7.25127 37.72L18.8513 37.02C21.4412 36.8659 23.9687 36.1619 26.2654 34.955C28.5621 33.748 30.5754 32.0657 32.1713 30.02L34.9113 29.9C35.1056 29.8961 35.2973 29.8539 35.4754 29.7759C35.6535 29.6979 35.8144 29.5856 35.9491 29.4454C36.0837 29.3052 36.1894 29.1398 36.2602 28.9587C36.3309 28.7776 36.3652 28.5844 36.3613 28.39C36.3545 28.174 36.2998 27.9623 36.2013 27.77L34.8713 25.28Z" fill="white"/>
+                        <path d="M24.9213 22.7197C25.3049 22.1075 25.5304 21.4097 25.5776 20.6888C25.6247 19.9679 25.4919 19.2466 25.1913 18.5897L26.3613 16.6497L24.3613 15.5297C24.2835 14.9195 24.0862 14.3307 23.7807 13.7969C23.4752 13.263 23.0675 12.7946 22.5808 12.4185C22.0941 12.0423 21.5381 11.7658 20.9445 11.6047C20.3509 11.4436 19.7313 11.4012 19.1213 11.4797C18.7039 11.5294 18.2961 11.6406 17.9113 11.8097L15.9713 10.6797L14.8613 12.6197C13.6353 12.7911 12.5269 13.4402 11.7776 14.4256C11.0283 15.4109 10.6989 16.6525 10.8613 17.8797C10.9185 18.2848 11.026 18.6812 11.1813 19.0597L10.0513 21.0597L12.0513 22.1897C12.1337 22.7979 12.3351 23.3838 12.6441 23.9141C12.9532 24.4443 13.3637 24.9085 13.8522 25.2799C14.3407 25.6514 14.8976 25.923 15.4912 26.0791C16.0847 26.2352 16.7032 26.2728 17.3113 26.1897C17.7093 26.1406 18.0993 26.0397 18.4713 25.8897L20.3613 26.9997L21.4713 24.9997C22.1899 24.934 22.881 24.6914 23.483 24.2936C24.085 23.8958 24.5791 23.355 24.9213 22.7197Z" fill="#10B990"/>
+                        <path d="M10.9213 31.37L10.7213 31C7.43133 24.81 4.24133 19.19 7.80133 13C7.83371 12.9604 7.86061 12.9167 7.88132 12.87L1.61133 9.25L3.16133 12.25C2.13731 14.5176 1.63198 16.9851 1.68214 19.4728C1.73231 21.9604 2.33671 24.4055 3.45132 26.63L8.18133 36.11L10.9213 31.37Z" fill="#234D69"/>
+                        <path d="M28.4513 24.7598C28.4241 24.8009 28.4007 24.8444 28.3813 24.8898C27.5993 26.2746 26.5359 27.4804 25.2597 28.4294C23.9835 29.3784 22.5226 30.0496 20.9713 30.3998C17.8065 31.0778 14.5779 31.4131 11.3413 31.3998H10.9213L8.19128 36.1298L18.7613 35.4898C21.2473 35.3413 23.6687 34.6393 25.8486 33.4351C28.0286 32.231 29.912 30.555 31.3613 28.5298L34.7213 28.3798L28.4513 24.7598Z" fill="#173F58"/>
+                        <path d="M23.9713 8.77945C26.6749 10.3187 28.662 12.8625 29.5008 15.8584C30.3397 18.8542 29.9625 22.0601 28.4513 24.7795L34.7213 28.3995L33.1513 25.3995C34.0733 23.2229 34.5233 20.8755 34.4715 18.5123C34.4198 16.149 33.8676 13.8236 32.8513 11.6895L28.1013 1.68945L23.9713 8.85945V8.77945Z" fill="#D65357"/>
+                        <path d="M23.9712 8.77938L28.1012 1.60938L17.0412 2.50938C14.6888 2.70134 12.4035 3.3886 10.3354 4.52606C8.2673 5.66352 6.46311 7.22546 5.04123 9.10938L1.63123 9.25938L7.90123 12.8894C9.50396 10.2318 12.0876 8.3112 15.0942 7.54223C18.1009 6.77325 21.2894 7.21762 23.9712 8.77938Z" fill="#EB5E60"/>
+                    </svg>
+                    <div>
+                        <p>باز کردن در</p>
+                        <p>نشــــــــان</p>
+                    </div>
+                </div>
+            </a>
+            <button id="audio-control-button" class="flex items-center justify-center">
+                <svg id="sound-on-icon" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                </svg>
+                <svg id="sound-off-icon" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                </svg>
+            </button>
+        </div>
     </div>
 
-    <!-- مودال بزرگنمایی تصویر (در ابتدا مخفی است) -->
     <div id="image-modal" class="modal-overlay">
         <span class="close-button" id="close-modal">&times;</span>
-        <!-- اصلاح تگ اشتباه iv به div -->
         <div class="modal-content">
          <img src="" alt="کارت دعوت" id="zoomed-image">
         </div>
@@ -276,15 +308,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // تعریف متغیرهای اصلی
             const bookletWrapper = document.getElementById('booklet-wrapper');
             const clickInstruction = document.getElementById('click-instruction');
-            const neshanButton = document.getElementById('neshan-button');
+            const actionButtons = document.getElementById('action-buttons'); // کانتینر دکمه‌ها
             const invitationImage = document.getElementById('invitation-image');
             const imageModal = document.getElementById('image-modal');
             const zoomedImage = document.getElementById('zoomed-image');
             const closeModal = document.getElementById('close-modal');
+            
+            // تعریف متغیرهای موسیقی
+            const music = document.getElementById('wedding-music');
+            const audioControlButton = document.getElementById('audio-control-button');
+            const soundOnIcon = document.getElementById('sound-on-icon');
+            const soundOffIcon = document.getElementById('sound-off-icon');
 
-            // مدیریت باز و بسته شدن کارت و نمایش دکمه‌ها
+            // مدیریت باز و بسته شدن کارت، نمایش دکمه‌ها و پخش موسیقی
             bookletWrapper.addEventListener('click', function(event) {
                 // جلوگیری از بسته شدن کارت هنگام کلیک روی عکس داخلی برای زوم
                 if (event.target.id === 'invitation-image' && this.classList.contains('open')) {
@@ -294,17 +333,37 @@
                 this.classList.toggle('open');
                 
                 if (this.classList.contains('open')) {
+                    // مخفی کردن راهنمای کلیک و نمایش دکمه‌ها
                     if (clickInstruction) clickInstruction.style.display = 'none';
-                    if (neshanButton) neshanButton.style.display = 'inline-block';
+                    if (actionButtons) actionButtons.style.display = 'flex';
+                    
+                    // پخش موسیقی
+                    music.play();
                 } else {
+                    // نمایش راهنمای کلیک و مخفی کردن دکمه‌ها
                     if (clickInstruction) clickInstruction.style.display = 'block';
-                    if (neshanButton) neshanButton.style.display = 'none';
+                    if (actionButtons) actionButtons.style.display = 'none';
+
+                    // قطع موسیقی
+                    music.pause();
+                }
+            });
+
+            // مدیریت دکمه کنترل صدا
+            audioControlButton.addEventListener('click', () => {
+                if (music.paused) {
+                    music.play();
+                    soundOnIcon.classList.remove('hidden');
+                    soundOffIcon.classList.add('hidden');
+                } else {
+                    music.pause();
+                    soundOnIcon.classList.add('hidden');
+                    soundOffIcon.classList.remove('hidden');
                 }
             });
 
             // باز کردن مودال برای بزرگنمایی تصویر
             invitationImage.addEventListener('click', function() {
-                // فقط در صورتی که کارت باز باشد، زوم عمل کند
                 if (bookletWrapper.classList.contains('open')) {
                     zoomedImage.src = this.src;
                     imageModal.classList.add('visible');
@@ -319,7 +378,6 @@
             // بستن مودال با کلیک روی دکمه بستن یا پس‌زمینه تیره
             closeModal.addEventListener('click', hideModal);
             imageModal.addEventListener('click', function(event) {
-                 // فقط اگر روی خود پس‌زمینه کلیک شد مودال بسته شود نه روی عکس
                  if (event.target === imageModal) {
                     hideModal();
                  }
