@@ -22,9 +22,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            perspective: 1800px;
             overflow: hidden;
-            padding: 1rem;
         }
 
         .booklet-wrapper {
@@ -74,7 +72,7 @@
              width: 100%;
              height: 100%;
              backface-visibility: hidden;
-             background-image: url('jeld.webp');
+             background-image: url('/jeld.webp');
              background-size: cover;
              background-position: center;
              transform: rotateY(180deg);
@@ -140,26 +138,29 @@
         
         h1, h2, p { margin: 0; }
 
-        /* استایل‌های مخصوص موبایل */
-        @media (max-width: 400px) {
-            .booklet-wrapper.open {
-                transform: translateY(30px) scale(.9) !important; 
-            }
-        }
-
+        /* --- استایل‌های اصلاح شده مخصوص موبایل --- */
         @media (max-width: 640px) {
+            .booklet-wrapper {
+                /* * تغییر اصلی اینجاست: 
+                 * کارت به جای پایین، به سمت بالا حرکت می‌کند تا روی دکمه‌ها را نپوشاند.
+                */
+                transform: translateY(-40px) scale(0.9) !important;  
+            }
             .booklet-wrapper.open {
-                transform: translateY(200px) scale(.8); 
+                /* * تغییر اصلی اینجاست: 
+                 * کارت به جای پایین، به سمت بالا حرکت می‌کند تا روی دکمه‌ها را نپوشاند.
+                */
+                transform: translateY(-60px) scale(0.9) !important; 
             }
             .cover {
-                transform-origin: top center;
+                transform-origin: top center; /* مبدا چرخش از بالا */
             }
             .booklet-wrapper.open .cover {
-                transform: rotateX(-160deg);
+                transform: rotateX(160deg);
             }
         }
 
-        /* -- استایل‌های جدید برای مودال و دکمه نشان -- */
+        /* -- استایل‌های مودال و دکمه نشان -- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -213,10 +214,6 @@
 
         #neshan-button {
             display: none; /* Initially hidden */
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
             background-color: #26a69a; /* Neshan-like color */
             color: white;
             padding: 0.75rem 1.5rem;
@@ -230,7 +227,7 @@
         }
         #neshan-button:hover {
             background-color: #2bbbad;
-            transform: translateX(-50%) translateY(-2px);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -253,24 +250,29 @@
         </div>
     </div>
 
-    <!-- راهنمای اولیه برای کلیک -->
-    <div id="click-instruction" class="absolute bottom-10 text-center text-gray-500 transition-opacity duration-500">
-        <p>برای باز کردن روی کارت کلیک کنید</p>
+    <!-- این کانتینر برای دکمه و راهنماست -->
+    <div class="fixed bottom-10 w-full flex flex-col items-center justify-center z-50 text-center px-4">
+        <!-- راهنمای اولیه برای کلیک -->
+        <div id="click-instruction" class="text-gray-500 transition-opacity duration-500 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full">
+            <p>برای باز کردن روی کارت کلیک کنید</p>
+        </div>
+    
+        <!-- دکمه نشان (در ابتدا مخفی است) -->
+        <!-- لطفا lat و lng و title را با مشخصات مکان مورد نظر خود جایگزین کنید -->
+        <a href="https://nshn.ir/sb_bhbxBNFoIY9" id="neshan-button">
+            📍 باز کردن در نشان
+        </a>
     </div>
-
-    <!-- دکمه نشان (در ابتدا مخفی است) -->
-    <!-- لطفا lat و lng و title را با مشخصات مکان مورد نظر خود جایگزین کنید -->
-    <a href="neshan://place?lat=35.7219&lng=51.3347&title=Wedding%20Hall" id="neshan-button">
-        📍 باز کردن در نشان
-    </a>
 
     <!-- مودال بزرگنمایی تصویر (در ابتدا مخفی است) -->
     <div id="image-modal" class="modal-overlay">
         <span class="close-button" id="close-modal">&times;</span>
-        <iv class="modal-content">
+        <!-- اصلاح تگ اشتباه iv به div -->
+        <div class="modal-content">
          <img src="" alt="کارت دعوت" id="zoomed-image">
-        </iv>
+        </div>
     </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
