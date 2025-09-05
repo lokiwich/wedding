@@ -4,25 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- Primary Meta Tags -->
+    <title> کارت دعوت عروسی پردیس و علی</title>
+    <meta name="title" content=" کارت دعوت عروسی پردیس و علی" />
+    <meta name="description" content="شما به جشن عروسی ما دعوت شدید 😍🥳" />
 
-<!-- Primary Meta Tags -->
-<title> کارت دعوت عروسی پردیس و علی</title>
-<meta name="title" content=" کارت دعوت عروسی پردیس و علی" />
-<meta name="description" content="شما به جشن عروسی ما دعوت شدید 😍🥳" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pardisandali.ir/" />
+    <meta property="og:title" content=" کارت دعوت عروسی پردیس و علی" />
+    <meta property="og:description" content="شما به جشن عروسی ما دعوت شدید 😍🥳" />
+    <meta property="og:image" content="https://pardisandali.ir/cart.jpg" />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://pardisandali.ir/" />
-<meta property="og:title" content=" کارت دعوت عروسی پردیس و علی" />
-<meta property="og:description" content="شما به جشن عروسی ما دعوت شدید 😍🥳" />
-<meta property="og:image" content="https://pardisandali.ir/cart.jpg" />
-
-<!-- X (Twitter) -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://pardisandali.ir/" />
-<meta property="twitter:title" content=" کارت دعوت عروسی پردیس و علی" />
-<meta property="twitter:description" content="شما به جشن عروسی ما دعوت شدید 😍🥳" />
-<meta property="twitter:image" content="https://pardisandali.ir/cart.jpg" />
+    <!-- X (Twitter) -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://pardisandali.ir/" />
+    <meta property="twitter:title" content=" کارت دعوت عروسی پردیس و علی" />
+    <meta property="twitter:description" content="شما به جشن عروسی ما دعوت شدید 😍🥳" />
+    <meta property="twitter:image" content="https://pardisandali.ir/cart.jpg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,7 +80,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: url('/jeld.jpg');
+            background-image: url('/front.jpg');
             background-size: cover;
             background-position: center center;
             border-radius: 8px;
@@ -92,7 +91,7 @@
              width: 100%;
              height: 100%;
              backface-visibility: hidden;
-             background-image: url('/jeld.jpg');
+             background-image: url('/front.jpg');
              background-size: cover;
              background-position: center;
              transform: rotateY(180deg);
@@ -151,7 +150,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 4px;
+            padding: 2px;
             text-align: center;
             cursor: zoom-in;
         }
@@ -260,6 +259,11 @@
             background-color: #9d80f5;
             transform: translateY(-2px);
         }
+
+        .booklet-wrapper:not(.open) {
+            animation-name: demo;
+            animation-duration: 1s;
+        }
     </style>
 </head>
 <body>
@@ -276,9 +280,9 @@
         <div class="cover" id="cover">
             <div class="cover-front-face">
                 <div class="cover-names">
-                    <p style="position: absolute; top: 30%; left: 24%;">Pardis</p>
+                    <!-- <p style="position: absolute; top: 30%; left: 24%;">Pardis</p>
                     <p style="position: absolute; top: 40%; left: 43%">&</p>
-                    <p style="position: absolute; top: 50%; left: 48%">Ali</p>
+                    <p style="position: absolute; top: 50%; left: 48%">Ali</p> -->
                 </div>
             </div>
             <div class="cover-back-face"></div>
@@ -350,9 +354,13 @@
                     return;
                 }
                 
-                this.classList.toggle('open');
+                toggleCard();
+            });
+
+            function toggleCard() {
+                bookletWrapper.classList.toggle('open');
                 
-                if (this.classList.contains('open')) {
+                if (bookletWrapper.classList.contains('open')) {
                     // مخفی کردن راهنمای کلیک و نمایش دکمه‌ها
                     if (clickInstruction) clickInstruction.style.display = 'none';
                     if (actionButtons) actionButtons.style.display = 'flex';
@@ -367,7 +375,7 @@
                     // قطع موسیقی
                     music.pause();
                 }
-            });
+            }
 
             // مدیریت دکمه کنترل صدا
             audioControlButton.addEventListener('click', () => {
